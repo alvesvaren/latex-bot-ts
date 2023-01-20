@@ -13,7 +13,6 @@
     "dotenv": "^16.0.3",
     "erlpack": "discord/erlpack",
     "mathjax": "^3.2.2",
-    "parse-color": "^1.0.0",
     "sharp": "^0.31.3",
     "utf-8-validate": "^5.0.10",
     "zlib-sync": "^0.1.7"
@@ -21,7 +20,6 @@
   "devDependencies": {
     "@swc/core": "^1.3.24",
     "@types/node": "^18.11.17",
-    "@types/parse-color": "^1.0.1",
     "@types/sharp": "^0.31.1",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",

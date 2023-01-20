@@ -1,9 +1,7 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-// import config from '../config.json' assert { type: "json" };
 import { CommandRun } from '../types';
 import mathjax from "mathjax";
 import sharp from "sharp";
-// import parse from 'parse-color';
 
 const jax = await mathjax.init({
     loader: {
