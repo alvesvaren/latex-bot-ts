@@ -57,6 +57,7 @@ export const run: CommandRun = async (c, interaction) => {
     .negate({ alpha: false })
     .modulate({ brightness })
     .webp({ quality: 50, effort: 0 })
+    .extend(2 * scale)
     .toBuffer();
 
   await interaction.editReply({
