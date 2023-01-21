@@ -56,7 +56,12 @@ client.once(Events.ClientReady, async c => {
 client.on(Events.InteractionCreate, async interaction => {
   if (!(interaction.isCommand() || interaction.isContextMenuCommand())) return;
   console.log(
-    `Interaction received: ${interaction.commandName} (${interaction.id})`,
+    `Interaction received: ${interaction.commandName} (${
+      interaction.user.username
+    }#${interaction.user.discriminator})
+    - ${interaction.options.data
+      .map(o => `${o.name}: '${o.value}'`)
+      .join(', ')}`,
   );
 
   await handleSlashCommand(client, interaction);
