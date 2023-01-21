@@ -56,9 +56,9 @@ client.on(Events.InteractionCreate, async interaction => {
     `Command ran: ${interaction.commandName} (${interaction.user.username}#${
       interaction.user.discriminator
     }, ${interaction.user.id})
-    args: {${interaction.options.data
+    - args: {${interaction.options.data
       .map(o => `${o.name}: ${JSON.stringify(o.value)}`)
-      .join(', ')}}\n`,
+      .join(', ')}}`,
   );
 
   await handleSlashCommand(client, interaction);
