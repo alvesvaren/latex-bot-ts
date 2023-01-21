@@ -10,13 +10,12 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Command } from './types';
-const __filename = fileURLToPath(import.meta.url);
+const filePath = fileURLToPath(import.meta.url);
 
-// Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const commands: Command[] = [];
 
-const commandsPath = path.join(path.dirname(__filename), 'commands');
+const commandsPath = path.join(path.dirname(filePath), 'commands');
 const commandFiles = await fs.readdir(commandsPath);
 
 for (const file of commandFiles) {
@@ -46,8 +45,6 @@ const handleSlashCommand = async (
   }
 };
 
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
 client.once(Events.ClientReady, async c => {
   await c.application.commands.set(commands.map(c => c.command));
   console.log(`Ready! Logged in as ${c.user.tag}`);
@@ -56,16 +53,15 @@ client.once(Events.ClientReady, async c => {
 client.on(Events.InteractionCreate, async interaction => {
   if (!(interaction.isCommand() || interaction.isContextMenuCommand())) return;
   console.log(
-    `Interaction received: ${interaction.commandName} (${
-      interaction.user.username
-    }#${interaction.user.discriminator})
-    - ${interaction.options.data
-      .map(o => `${o.name}: '${o.value}'`)
-      .join(', ')}`,
+    `Command ran: ${interaction.commandName} (${interaction.user.username}#${
+      interaction.user.discriminator
+    }, ${interaction.user.id})
+    args: {${interaction.options.data
+      .map(o => `${o.name}: ${JSON.stringify(o.value)}`)
+      .join(', ')}}\n`,
   );
 
   await handleSlashCommand(client, interaction);
 });
 
-// Log in to Discord with your client's token
 client.login(process.env.TOKEN);
