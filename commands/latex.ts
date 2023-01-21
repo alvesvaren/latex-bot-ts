@@ -51,13 +51,6 @@ export const run: CommandRun = async (c, interaction) => {
   const obj = sharp(Buffer.from(svg));
 
   const png = await obj
-    .extend({
-      top: 2,
-      bottom: 2,
-      left: 2,
-      right: 2,
-      background: { r: 255, g: 255, b: 255, alpha: 0 },
-    })
     .resize({
       height: Math.ceil(((await obj.metadata()).height || 16) * scale),
     })
