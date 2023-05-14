@@ -46,7 +46,9 @@ export const run: CommandRun = async (c, interaction) => {
   };
 
   const svg = MathJax.startup.adaptor.innerHTML(
-    await jax.tex2svgPromise(code, { display: true }),
+    await jax.tex2svgPromise(`\\begin{aligned} ${code}\\end{aligned}`, {
+      display: true,
+    }),
   );
   const obj = sharp(Buffer.from(svg));
 
@@ -66,11 +68,11 @@ export const run: CommandRun = async (c, interaction) => {
           iconURL: interaction.user.avatarURL() || undefined,
           name: interaction.user.username,
         })
-        .setImage(`attachment://latex.webp`),
+        .setImage(`attachment://rendered.webp`),
     ],
     files: [
       {
-        name: 'latex.webp',
+        name: 'rendered.webp',
         attachment: png,
       },
     ],
