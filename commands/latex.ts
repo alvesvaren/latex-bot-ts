@@ -35,6 +35,8 @@ export const command = new SlashCommandBuilder()
       .setMaxValue(5);
   });
 
+Reflect.set(command, "integration_types", [0,1]);
+
 export const run: CommandRun = async (c, interaction) => {
   const { value: code } = interaction.options.get('code', true) as {
     value: string;
