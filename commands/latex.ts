@@ -36,6 +36,7 @@ export const command = new SlashCommandBuilder()
   });
 
 export const run: CommandRun = async (c, interaction) => {
+  const timeStart = new Date().getTime();
   const { value: code } = interaction.options.get('code', true) as {
     value: string;
   };
@@ -46,9 +47,12 @@ export const run: CommandRun = async (c, interaction) => {
   };
 
   const svg = MathJax.startup.adaptor.innerHTML(
-    await jax.tex2svgPromise(`\\begin{aligned} ${code}\\end{aligned}`, {
-      display: true,
-    }),
+    await jax.tex2svgPromise(
+      `\\begin{aligned} \\color{white} ${code}\\end{aligned}`,
+      {
+        display: true,
+      },
+    ),
   );
   const obj = sharp(Buffer.from(svg));
 
@@ -56,25 +60,18 @@ export const run: CommandRun = async (c, interaction) => {
     .resize({
       height: Math.ceil(((await obj.metadata()).height || 16) * scale),
     })
-    .negate({ alpha: false })
     .modulate({ brightness })
-    .webp({ quality: 50, effort: 0 })
+    .png({ effort: 1 })
     .toBuffer();
 
   await interaction.editReply({
-    embeds: [
-      new EmbedBuilder()
-        .setAuthor({
-          iconURL: interaction.user.avatarURL() || undefined,
-          name: interaction.user.username,
-        })
-        .setImage(`attachment://rendered.webp`),
-    ],
+    embeds: [new EmbedBuilder().setImage(`attachment://rendered.png`)],
     files: [
       {
-        name: 'rendered.webp',
+        name: 'rendered.png',
         attachment: png,
       },
     ],
   });
+  console.log(`Took ${new Date().getTime() - timeStart}ms`);
 };
