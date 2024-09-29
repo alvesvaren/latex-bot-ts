@@ -4,6 +4,7 @@ import {
   CommandInteraction,
   Events,
   GatewayIntentBits,
+  Routes,
 } from 'discord.js';
 import 'dotenv/config';
 import fs from 'fs/promises';
@@ -46,16 +47,23 @@ const handleSlashCommand = async (
 };
 
 client.once(Events.ClientReady, async c => {
-  await c.application.commands.set(commands.map(c => c.command));
+  await c.rest.put(Routes.applicationCommands(c.application.id), {
+    body: commands.map(c => ({
+      ...c.command.toJSON(),
+      // Make the command run in all contexts
+      contexts: [0, 1, 2],
+      integration_types: [0, 1],
+    })),
+  });
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!(interaction.isCommand() || interaction.isContextMenuCommand())) return;
   console.log(
-    `Command ran: ${interaction.commandName} (${interaction.user.username}#${
-      interaction.user.discriminator
-    }, ${interaction.user.id})
+    `Command ran: ${interaction.commandName} (${interaction.user.username}, ${
+      interaction.user.id
+    })
     - args: {${interaction.options.data
       .map(o => `${o.name}: ${JSON.stringify(o.value)}`)
       .join(', ')}}`,
