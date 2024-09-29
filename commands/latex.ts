@@ -48,7 +48,7 @@ export const run: CommandRun = async (c, interaction) => {
 
   const svg = MathJax.startup.adaptor.innerHTML(
     await jax.tex2svgPromise(
-      `\\begin{aligned} \\color{white} ${code}\\end{aligned}`,
+      `\\color{white} \\begin{aligned} ${code} \\end{aligned}`,
       {
         display: true,
       },
