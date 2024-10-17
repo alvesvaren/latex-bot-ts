@@ -14,3 +14,7 @@ https://discord.com/api/oauth2/authorize?client_id=1066050993403465880&permissio
 Run the slash command: `/latex <code> [brightness] [scale]`
 
 This will respond with the rendered latex
+
+Run the slash command: `/wolframalpha <equation>`
+
+This will respond with the solution to the equation using Wolfram Alpha

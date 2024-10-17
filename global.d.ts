@@ -15,3 +15,9 @@ declare namespace MathJax {
     };
   };
 }
+
+declare module 'wolfram-alpha-api' {
+  export default function WolframAlphaAPI(appId: string): {
+    getFull: (input: string) => Promise<any>;
+  };
+}

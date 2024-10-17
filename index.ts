@@ -1,16 +1,18 @@
-// Require the necessary discord.js classes
 import {
   Client,
   CommandInteraction,
   Events,
   GatewayIntentBits,
   Routes,
+  ContextMenuCommandBuilder,
+  ApplicationCommandType,
 } from 'discord.js';
 import 'dotenv/config';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Command } from './types';
+import { command as wolframAlphaCommand } from './commands/wolframalpha'; // P45f5
 const filePath = fileURLToPath(import.meta.url);
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -24,6 +26,8 @@ for (const file of commandFiles) {
   const command: Command = await import(filePath);
   commands.push(command);
 }
+
+commands.push(wolframAlphaCommand); // P9956
 
 const handleSlashCommand = async (
   client: Client,
@@ -48,12 +52,13 @@ const handleSlashCommand = async (
 
 client.once(Events.ClientReady, async c => {
   await c.rest.put(Routes.applicationCommands(c.application.id), {
-    body: commands.map(c => ({
-      ...c.command.toJSON(),
-      // Make the command run in all contexts
-      contexts: [0, 1, 2],
-      integration_types: [0, 1],
-    })),
+    body: [
+      ...commands.map(c => c.command.toJSON()),
+      new ContextMenuCommandBuilder()
+        .setName('Solve with Wolfram Alpha')
+        .setType(ApplicationCommandType.Message)
+        .toJSON(),
+    ],
   });
   console.log(`Ready! Logged in as ${c.user.tag}`);
 });
@@ -68,6 +73,20 @@ client.on(Events.InteractionCreate, async interaction => {
       .map(o => `${o.name}: ${JSON.stringify(o.value)}`)
       .join(', ')}}`,
   );
+
+  if (interaction.isContextMenuCommand()) {
+    if (interaction.commandName === 'Solve with Wolfram Alpha') {
+      const message = interaction.targetMessage;
+      const equation = message.content;
+      await wolframAlphaCommand.run(client, {
+        ...interaction,
+        options: {
+          getString: () => equation,
+        },
+      });
+      return;
+    }
+  }
 
   await handleSlashCommand(client, interaction);
 });
