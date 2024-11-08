@@ -1,7 +1,6 @@
 # Latex bot
 
-Invite:
-https://discord.com/api/oauth2/authorize?client_id=1066050993403465880&permissions=277025441792&scope=bot
+You can install the bot from the discord app directory: https://discord.com/application-directory/1066050993403465880
 
 ## To host yourself:
 
