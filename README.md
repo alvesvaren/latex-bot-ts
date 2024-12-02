@@ -15,3 +15,7 @@ You can install the bot from the discord app directory: https://discord.com/appl
 Run the slash command: `/latex <code> [brightness] [scale]`
 
 This will respond with the rendered latex
+
+Run the slash command: `/wolframalpha <equation>`
+
+This will respond with the solution to the equation using Wolfram Alpha
