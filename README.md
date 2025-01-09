@@ -1,3 +1,5 @@
+![Server count badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Fv9%2Fapplication-directory-static%2Fapplications%2F1066050993403465880&query=%24.directory_entry.guild_count&logo=Discord&logoColor=white&label=Servers)
+
 # Latex bot
 
 This is the old code for the bot, some features are paid and not available in this repository. You can still open issues here for the live version of the bot
